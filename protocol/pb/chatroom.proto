@@ -1,0 +1,77 @@
+syntax = "proto3";
+package msg;
+option  go_package = "/msg";
+
+import "error.proto";
+
+
+enum CHATROOM
+{
+    UNKNOWN = 0;
+
+    // 用户心跳
+    PING  = 1;
+    PONG  = 2;
+
+    // 登入请求/回复
+    LOGIN_REQ = 100;
+    LOGIN_RESP = 101;
+
+    // 聊天请求/回复
+    CHAT_REQ  = 201;
+    CHAT_RESP = 202;
+
+    // 广播聊天消息
+    BROADCAST_MSG = 203;
+
+}
+
+// 心跳
+message Ping
+{
+    int64 clientTime = 1;
+}
+
+// 心跳
+message Pong
+{
+    int64 clientTime = 1;
+    int64 serverTime = 2;
+}
+
+// 请求登入
+message LoginReq
+{
+    string name = 1;
+    string room = 2;
+}
+message LoginResp
+{
+    ERROR    errCode            = 1;
+    string   room               = 2;
+    repeated ChatMsg history    = 3;
+}
+
+// 请求发起聊天
+message ChatReq
+{
+    string chatText = 1;
+}
+message ChatResp
+{
+    ERROR err = 1;
+}
+
+// 房间内广播的聊天消息
+message BroadcastMsg
+{
+    repeated ChatMsg msgs = 1;
+}
+
+// 一条聊天信息
+message ChatMsg
+{
+    string name     = 1;
+    string chatText = 2;
+    int64  createAt = 3;
+}

@@ -1,0 +1,35 @@
+syntax = "proto3";
+package msg;
+option  go_package = "/msg";
+import "error.proto";
+import "chatroom.proto";
+
+message SessionBroken
+{
+    string session = 1;
+}
+
+message GateMsgWrapper
+{
+    string gateSession = 1;
+    string msgName     = 2;
+    bytes  data        = 3;
+}
+
+message UserEnterRoomReq
+{
+    string name    = 1; // 用户昵称
+    string session = 2; // tcp会话信息
+}
+
+message UserEnterRoomResp
+{
+    INNER_ERROR      errCode = 1;
+    repeated ChatMsg history = 2;
+}
+
+message EnterRoomNotifyGateway
+{
+    string session     = 1;
+    string room        = 2;
+}
